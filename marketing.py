@@ -1,9 +1,9 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 
-class PropertyTab:
+class MarketingTab:
     def __init__(self, parent, database, app):
-        """Initialize the Property Management tab"""
+        """Initialize the Marketing tab"""
         self.parent = parent
         self.db = database
         self.app = app
@@ -22,47 +22,90 @@ class PropertyTab:
         self.create_tab()
 
     def create_tab(self):
-        """Create the Property Management tab UI"""
-        property_frame = ttk.Frame(self.parent)
-        self.parent.add(property_frame, text="Property Management")
+        """Create the marketing tab UI"""
+        marketing_frame = ttk.Frame(self.parent)
+        self.parent.add(marketing_frame, text="Marketing")
 
         # Left frame for property entry
-        left_frame = ttk.Frame(property_frame)
+        left_frame = ttk.Frame(marketing_frame)
         left_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=10, pady=10)
 
         # Right frame for property listing
-        right_frame = ttk.Frame(property_frame)
+        right_frame = ttk.Frame(marketing_frame)
         right_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=10, pady=10)
 
         # Property input fields
-        ttk.Label(left_frame, text="Property Management", font=("Arial", 14, "bold")).grid(row=0, column=0, columnspan=2, pady=10)
+        ttk.Label(
+            left_frame, text="Marketing", font=("Arial", 14, "bold")
+        ).grid(row=0, column=0, columnspan=2, pady=10)
 
-        ttk.Label(left_frame, text="Address:").grid(row=1, column=0, sticky=tk.W, pady=5)
-        ttk.Entry(left_frame, textvariable=self.address_var, width=40).grid(row=1, column=1, pady=5, sticky=tk.W)
+        ttk.Label(left_frame, text="Address:").grid(
+            row=1, column=0, sticky=tk.W, pady=5
+        )
+        ttk.Entry(left_frame, textvariable=self.address_var, width=40).grid(
+            row=1, column=1, pady=5, sticky=tk.W
+        )
 
-        ttk.Label(left_frame, text="Property Type:").grid(row=2, column=0, sticky=tk.W, pady=5)
-        property_types = ["Apartment", "House", "Condo", "Townhouse", "Land", "Commercial"]
-        ttk.Combobox(left_frame, textvariable=self.property_type_var, values=property_types, width=15).grid(row=2, column=1, pady=5, sticky=tk.W)
+        ttk.Label(left_frame, text="Property Type:").grid(
+            row=2, column=0, sticky=tk.W, pady=5
+        )
+        property_types = [
+            "Apartment",
+            "House",
+            "Condo",
+            "Townhouse",
+            "Land",
+            "Commercial",
+        ]
+        ttk.Combobox(
+            left_frame,
+            textvariable=self.property_type_var,
+            values=property_types,
+            width=15,
+        ).grid(row=2, column=1, pady=5, sticky=tk.W)
 
-        ttk.Label(left_frame, text="Bedrooms:").grid(row=3, column=0, sticky=tk.W, pady=5)
-        ttk.Spinbox(left_frame, from_=0, to=10, textvariable=self.bedrooms_var, width=5).grid(row=3, column=1, pady=5, sticky=tk.W)
+        ttk.Label(left_frame, text="Bedrooms:").grid(
+            row=3, column=0, sticky=tk.W, pady=5
+        )
+        ttk.Spinbox(
+            left_frame, from_=0, to=10, textvariable=self.bedrooms_var, width=5
+        ).grid(row=3, column=1, pady=5, sticky=tk.W)
 
-        ttk.Label(left_frame, text="Bathrooms:").grid(row=4, column=0, sticky=tk.W, pady=5)
-        ttk.Spinbox(left_frame, from_=0, to=10, increment=0.5, textvariable=self.bathrooms_var, width=5).grid(row=4, column=1, pady=5, sticky=tk.W)
+        ttk.Label(left_frame, text="Bathrooms:").grid(
+            row=4, column=0, sticky=tk.W, pady=5
+        )
+        ttk.Spinbox(
+            left_frame,
+            from_=0,
+            to=10,
+            increment=0.5,
+            textvariable=self.bathrooms_var,
+            width=5,
+        ).grid(row=4, column=1, pady=5, sticky=tk.W)
 
-        ttk.Label(left_frame, text="Price ($):").grid(row=5, column=0, sticky=tk.W, pady=5)
-        ttk.Entry(left_frame, textvariable=self.price_var, width=15).grid(row=5, column=1, pady=5, sticky=tk.W)
+        ttk.Label(left_frame, text="Price ($):").grid(
+            row=5, column=0, sticky=tk.W, pady=5
+        )
+        ttk.Entry(left_frame, textvariable=self.price_var, width=15).grid(
+            row=5, column=1, pady=5, sticky=tk.W
+        )
 
         ttk.Label(left_frame, text="Status:").grid(row=6, column=0, sticky=tk.W, pady=5)
         status_types = ["Available", "Pending", "Sold", "Off Market"]
-        ttk.Combobox(left_frame, textvariable=self.status_var, values=status_types, width=15).grid(row=6, column=1, pady=5, sticky=tk.W)
+        ttk.Combobox(
+            left_frame, textvariable=self.status_var, values=status_types, width=15
+        ).grid(row=6, column=1, pady=5, sticky=tk.W)
 
         ttk.Label(left_frame, text="Agent:").grid(row=7, column=0, sticky=tk.W, pady=5)
-        self.agent_combo = ttk.Combobox(left_frame, textvariable=self.agent_id_var, width=25)
+        self.agent_combo = ttk.Combobox(
+            left_frame, textvariable=self.agent_id_var, width=25
+        )
         self.agent_combo.grid(row=7, column=1, pady=5, sticky=tk.W)
         self.update_agent_combo()
 
-        ttk.Label(left_frame, text="Description:").grid(row=8, column=0, sticky=tk.W, pady=5)
+        ttk.Label(left_frame, text="Description:").grid(
+            row=8, column=0, sticky=tk.W, pady=5
+        )
         self.description_text = tk.Text(left_frame, width=40, height=5)
         self.description_text.grid(row=8, column=1, pady=5, sticky=tk.W)
 
@@ -70,26 +113,44 @@ class PropertyTab:
         button_frame = ttk.Frame(left_frame)
         button_frame.grid(row=9, column=0, columnspan=2, pady=10)
 
-        ttk.Button(button_frame, text="Add Property", command=self.add_property).pack(side=tk.LEFT, padx=5)
-        ttk.Button(button_frame, text="Update Property", command=self.update_property).pack(side=tk.LEFT, padx=5)
-        ttk.Button(button_frame, text="Delete Property", command=self.delete_property).pack(side=tk.LEFT, padx=5)
-        ttk.Button(button_frame, text="Clear Fields", command=self.clear_fields).pack(side=tk.LEFT, padx=5)
+        ttk.Button(button_frame, text="Add Property", command=self.add_property).pack(
+            side=tk.LEFT, padx=5
+        )
+        ttk.Button(
+            button_frame, text="Update Property", command=self.update_property
+        ).pack(side=tk.LEFT, padx=5)
+        ttk.Button(
+            button_frame, text="Delete Property", command=self.delete_property
+        ).pack(side=tk.LEFT, padx=5)
+        ttk.Button(button_frame, text="Clear Fields", command=self.clear_fields).pack(
+            side=tk.LEFT, padx=5
+        )
 
         # Property listing
-        ttk.Label(right_frame, text="Property Listings", font=("Arial", 14, "bold")).pack(pady=10)
+        ttk.Label(
+            right_frame, text="Property Listings", font=("Arial", 14, "bold")
+        ).pack(pady=10)
 
         # Search frame
         search_frame = ttk.Frame(right_frame)
         search_frame.pack(fill=tk.X, pady=5)
 
         ttk.Label(search_frame, text="Search:").pack(side=tk.LEFT, padx=5)
-        ttk.Entry(search_frame, textvariable=self.property_search_var, width=20).pack(side=tk.LEFT, padx=5)
-        ttk.Button(search_frame, text="Search", command=self.search_properties).pack(side=tk.LEFT, padx=5)
-        ttk.Button(search_frame, text="Show All", command=self.load_properties).pack(side=tk.LEFT, padx=5)
+        ttk.Entry(search_frame, textvariable=self.property_search_var, width=20).pack(
+            side=tk.LEFT, padx=5
+        )
+        ttk.Button(search_frame, text="Search", command=self.search_properties).pack(
+            side=tk.LEFT, padx=5
+        )
+        ttk.Button(search_frame, text="Show All", command=self.load_properties).pack(
+            side=tk.LEFT, padx=5
+        )
 
         # Treeview for property listing
         columns = ("id", "address", "type", "beds", "baths", "price", "status", "agent")
-        self.property_tree = ttk.Treeview(right_frame, columns=columns, show="headings", height=15)
+        self.property_tree = ttk.Treeview(
+            right_frame, columns=columns, show="headings", height=15
+        )
 
         # Define headings
         self.property_tree.heading("id", text="ID")
@@ -112,7 +173,9 @@ class PropertyTab:
         self.property_tree.column("agent", width=150)
 
         # Add scrollbar
-        property_scrollbar = ttk.Scrollbar(right_frame, orient=tk.VERTICAL, command=self.property_tree.yview)
+        property_scrollbar = ttk.Scrollbar(
+            right_frame, orient=tk.VERTICAL, command=self.property_tree.yview
+        )
         self.property_tree.configure(yscrollcommand=property_scrollbar.set)
 
         # Pack tree and scrollbar
@@ -154,7 +217,9 @@ class PropertyTab:
         description = self.description_text.get("1.0", tk.END).strip()
 
         if not address or not property_type:
-            messagebox.showerror("Error", "Address and Property Type are required fields")
+            messagebox.showerror(
+                "Error", "Address and Property Type are required fields"
+            )
             return
 
         try:
@@ -162,7 +227,16 @@ class PropertyTab:
             bathrooms = float(bathrooms) if bathrooms else 0
             price = float(price) if price else 0
 
-            self.db.add_property(address, property_type, bedrooms, bathrooms, price, status, agent_id, description)
+            self.db.add_property(
+                address,
+                property_type,
+                bedrooms,
+                bathrooms,
+                price,
+                status,
+                agent_id,
+                description,
+            )
             self.clear_fields()
             self.load_properties()
             self.app.inquiry_tab.update_property_combo()
@@ -189,7 +263,9 @@ class PropertyTab:
         description = self.description_text.get("1.0", tk.END).strip()
 
         if not address or not property_type:
-            messagebox.showerror("Error", "Address and Property Type are required fields")
+            messagebox.showerror(
+                "Error", "Address and Property Type are required fields"
+            )
             return
 
         try:
@@ -197,7 +273,17 @@ class PropertyTab:
             bathrooms = float(bathrooms) if bathrooms else 0
             price = float(price) if price else 0
 
-            self.db.update_property(property_id, address, property_type, bedrooms, bathrooms, price, status, agent_id, description)
+            self.db.update_property(
+                property_id,
+                address,
+                property_type,
+                bedrooms,
+                bathrooms,
+                price,
+                status,
+                agent_id,
+                description,
+            )
             self.load_properties()
             self.app.inquiry_tab.update_property_combo()
 
@@ -214,7 +300,10 @@ class PropertyTab:
 
         property_id = self.property_tree.item(selected_item, "values")[0]
 
-        confirm = messagebox.askyesno("Confirm Delete", "Are you sure you want to delete this property? This action cannot be undone.")
+        confirm = messagebox.askyesno(
+            "Confirm Delete",
+            "Are you sure you want to delete this property? This action cannot be undone.",
+        )
         if not confirm:
             return
 
@@ -255,7 +344,20 @@ class PropertyTab:
             baths_formatted = int(baths) if baths.is_integer() else baths
 
             # Add to treeview with formatted values
-            self.property_tree.insert("", "end", values=(row[0], row[1], row[2], beds, baths_formatted, price_formatted, row[6], row[7] or "None"))
+            self.property_tree.insert(
+                "",
+                "end",
+                values=(
+                    row[0],
+                    row[1],
+                    row[2],
+                    beds,
+                    baths_formatted,
+                    price_formatted,
+                    row[6],
+                    row[7] or "None",
+                ),
+            )
 
     def search_properties(self):
         """Search properties by address or property type"""
@@ -288,7 +390,20 @@ class PropertyTab:
             baths_formatted = int(baths) if baths.is_integer() else baths
 
             # Add to treeview with formatted values
-            self.property_tree.insert("", "end", values=(row[0], row[1], row[2], beds, baths_formatted, price_formatted, row[6], row[7] or "None"))
+            self.property_tree.insert(
+                "",
+                "end",
+                values=(
+                    row[0],
+                    row[1],
+                    row[2],
+                    beds,
+                    baths_formatted,
+                    price_formatted,
+                    row[6],
+                    row[7] or "None",
+                ),
+            )
 
     def property_selected(self, event):
         """Handle property selection in the treeview"""

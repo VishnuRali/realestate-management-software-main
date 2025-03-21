@@ -4,7 +4,7 @@ from tkinter import ttk, messagebox
 from property import PropertyTab
 from agent import AgentTab
 from inquiry import InquiryTab
-
+from marketing import MarketingTab # Import the marketing tab
 
 class RealEstateApp:
     def __init__(self, root, database):
@@ -28,6 +28,7 @@ class RealEstateApp:
         self.property_tab = PropertyTab(self.notebook, self.db, self)
         self.agent_tab = AgentTab(self.notebook, self.db, self)
         self.inquiry_tab = InquiryTab(self.notebook, self.db, self)
+        self.marketing_tab = MarketingTab(self.notebook, self.db, self)  # Add this line
 
         # Add a status bar
         self.create_status_bar()

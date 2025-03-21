@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 
-
 class InquiryTab:
     def __init__(self, parent, database, app):
         """Initialize the Client Inquiry Tracking tab"""
@@ -36,57 +35,27 @@ class InquiryTab:
         right_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=10, pady=10)
 
         # Inquiry input fields
-        ttk.Label(
-            left_frame, text="Client Inquiry Tracking", font=("Arial", 14, "bold")
-        ).grid(row=0, column=0, columnspan=2, pady=10)
+        ttk.Label(left_frame, text="Client Inquiry Tracking", font=("Arial", 14, "bold")).grid(row=0, column=0, columnspan=2, pady=10)
 
-        ttk.Label(left_frame, text="Client Name:").grid(
-            row=1, column=0, sticky=tk.W, pady=5
-        )
-        ttk.Entry(left_frame, textvariable=self.client_name_var, width=30).grid(
-            row=1, column=1, pady=5, sticky=tk.W
-        )
+        ttk.Label(left_frame, text="Client Name:").grid(row=1, column=0, sticky=tk.W, pady=5)
+        ttk.Entry(left_frame, textvariable=self.client_name_var, width=30).grid(row=1, column=1, pady=5, sticky=tk.W)
 
-        ttk.Label(left_frame, text="Contact Info:").grid(
-            row=2, column=0, sticky=tk.W, pady=5
-        )
-        ttk.Entry(left_frame, textvariable=self.contact_info_var, width=30).grid(
-            row=2, column=1, pady=5, sticky=tk.W
-        )
+        ttk.Label(left_frame, text="Contact Info:").grid(row=2, column=0, sticky=tk.W, pady=5)
+        ttk.Entry(left_frame, textvariable=self.contact_info_var, width=30).grid(row=2, column=1, pady=5, sticky=tk.W)
 
-        ttk.Label(left_frame, text="Property:").grid(
-            row=3, column=0, sticky=tk.W, pady=5
-        )
-        self.property_combo = ttk.Combobox(
-            left_frame, textvariable=self.property_id_var, width=30
-        )
+        ttk.Label(left_frame, text="Property:").grid(row=3, column=0, sticky=tk.W, pady=5)
+        self.property_combo = ttk.Combobox(left_frame, textvariable=self.property_id_var, width=30)
         self.property_combo.grid(row=3, column=1, pady=5, sticky=tk.W)
         self.update_property_combo()
 
-        ttk.Label(left_frame, text="Assigned Agent:").grid(
-            row=4, column=0, sticky=tk.W, pady=5
-        )
-        self.agent_combo = ttk.Combobox(
-            left_frame, textvariable=self.inquiry_agent_id_var, width=25
-        )
+        ttk.Label(left_frame, text="Assigned Agent:").grid(row=4, column=0, sticky=tk.W, pady=5)
+        self.agent_combo = ttk.Combobox(left_frame, textvariable=self.inquiry_agent_id_var, width=25)
         self.agent_combo.grid(row=4, column=1, pady=5, sticky=tk.W)
         self.update_agent_combo()
 
         ttk.Label(left_frame, text="Status:").grid(row=5, column=0, sticky=tk.W, pady=5)
-        status_types = [
-            "New",
-            "Contacted",
-            "Viewing Scheduled",
-            "Offer Made",
-            "Closed",
-            "Cancelled",
-        ]
-        ttk.Combobox(
-            left_frame,
-            textvariable=self.inquiry_status_var,
-            values=status_types,
-            width=15,
-        ).grid(row=5, column=1, pady=5, sticky=tk.W)
+        status_types = ["New", "Contacted", "Viewing Scheduled", "Offer Made", "Closed", "Cancelled"]
+        ttk.Combobox(left_frame, textvariable=self.inquiry_status_var, values=status_types, width=15).grid(row=5, column=1, pady=5, sticky=tk.W)
 
         ttk.Label(left_frame, text="Notes:").grid(row=6, column=0, sticky=tk.W, pady=5)
         self.notes_text = tk.Text(left_frame, width=40, height=5)
@@ -96,38 +65,22 @@ class InquiryTab:
         button_frame = ttk.Frame(left_frame)
         button_frame.grid(row=7, column=0, columnspan=2, pady=10)
 
-        ttk.Button(button_frame, text="Add Inquiry", command=self.add_inquiry).pack(
-            side=tk.LEFT, padx=5
-        )
-        ttk.Button(
-            button_frame, text="Update Inquiry", command=self.update_inquiry
-        ).pack(side=tk.LEFT, padx=5)
-        ttk.Button(
-            button_frame, text="Delete Inquiry", command=self.delete_inquiry
-        ).pack(side=tk.LEFT, padx=5)
-        ttk.Button(button_frame, text="Clear Fields", command=self.clear_fields).pack(
-            side=tk.LEFT, padx=5
-        )
+        ttk.Button(button_frame, text="Add Inquiry", command=self.add_inquiry).pack(side=tk.LEFT, padx=5)
+        ttk.Button(button_frame, text="Update Inquiry", command=self.update_inquiry).pack(side=tk.LEFT, padx=5)
+        ttk.Button(button_frame, text="Delete Inquiry", command=self.delete_inquiry).pack(side=tk.LEFT, padx=5)
+        ttk.Button(button_frame, text="Clear Fields", command=self.clear_fields).pack(side=tk.LEFT, padx=5)
 
         # Inquiry listing
-        ttk.Label(
-            right_frame, text="Client Inquiries", font=("Arial", 14, "bold")
-        ).pack(pady=10)
+        ttk.Label(right_frame, text="Client Inquiries", font=("Arial", 14, "bold")).pack(pady=10)
 
         # Search frame
         search_frame = ttk.Frame(right_frame)
         search_frame.pack(fill=tk.X, pady=5)
 
         ttk.Label(search_frame, text="Search:").pack(side=tk.LEFT, padx=5)
-        ttk.Entry(search_frame, textvariable=self.inquiry_search_var, width=20).pack(
-            side=tk.LEFT, padx=5
-        )
-        ttk.Button(search_frame, text="Search", command=self.search_inquiries).pack(
-            side=tk.LEFT, padx=5
-        )
-        ttk.Button(search_frame, text="Show All", command=self.load_inquiries).pack(
-            side=tk.LEFT, padx=5
-        )
+        ttk.Entry(search_frame, textvariable=self.inquiry_search_var, width=20).pack(side=tk.LEFT, padx=5)
+        ttk.Button(search_frame, text="Search", command=self.search_inquiries).pack(side=tk.LEFT, padx=5)
+        ttk.Button(search_frame, text="Show All", command=self.load_inquiries).pack(side=tk.LEFT, padx=5)
 
         # Filter by status
         filter_frame = ttk.Frame(right_frame)
@@ -135,21 +88,12 @@ class InquiryTab:
 
         ttk.Label(filter_frame, text="Filter by Status:").pack(side=tk.LEFT, padx=5)
         status_filter = ["All"] + status_types
-        ttk.Combobox(
-            filter_frame,
-            textvariable=self.inquiry_filter_var,
-            values=status_filter,
-            width=15,
-        ).pack(side=tk.LEFT, padx=5)
-        ttk.Button(
-            filter_frame, text="Apply Filter", command=self.filter_inquiries
-        ).pack(side=tk.LEFT, padx=5)
+        ttk.Combobox(filter_frame, textvariable=self.inquiry_filter_var, values=status_filter, width=15).pack(side=tk.LEFT, padx=5)
+        ttk.Button(filter_frame, text="Apply Filter", command=self.filter_inquiries).pack(side=tk.LEFT, padx=5)
 
         # Treeview for inquiry listing
         columns = ("id", "client", "property", "date", "status", "agent")
-        self.inquiry_tree = ttk.Treeview(
-            right_frame, columns=columns, show="headings", height=15
-        )
+        self.inquiry_tree = ttk.Treeview(right_frame, columns=columns, show="headings", height=15)
 
         # Define headings
         self.inquiry_tree.heading("id", text="ID")
@@ -168,9 +112,7 @@ class InquiryTab:
         self.inquiry_tree.column("agent", width=150)
 
         # Add scrollbar
-        inquiry_scrollbar = ttk.Scrollbar(
-            right_frame, orient=tk.VERTICAL, command=self.inquiry_tree.yview
-        )
+        inquiry_scrollbar = ttk.Scrollbar(right_frame, orient=tk.VERTICAL, command=self.inquiry_tree.yview)
         self.inquiry_tree.configure(yscrollcommand=inquiry_scrollbar.set)
 
         # Pack tree and scrollbar
@@ -221,9 +163,7 @@ class InquiryTab:
             return
 
         try:
-            self.db.add_inquiry(
-                client_name, contact_info, property_id, status, notes, agent_id
-            )
+            self.db.add_inquiry(client_name, contact_info, property_id, status, notes, agent_id)
             self.clear_fields()
             self.load_inquiries()
 
@@ -251,15 +191,7 @@ class InquiryTab:
             return
 
         try:
-            self.db.update_inquiry(
-                inquiry_id,
-                client_name,
-                contact_info,
-                property_id,
-                status,
-                notes,
-                agent_id,
-            )
+            self.db.update_inquiry(inquiry_id, client_name, contact_info, property_id, status, notes, agent_id)
             self.load_inquiries()
 
             messagebox.showinfo("Success", "Inquiry updated successfully")
@@ -275,10 +207,7 @@ class InquiryTab:
 
         inquiry_id = self.inquiry_tree.item(selected_item, "values")[0]
 
-        confirm = messagebox.askyesno(
-            "Confirm Delete",
-            "Are you sure you want to delete this inquiry? This action cannot be undone.",
-        )
+        confirm = messagebox.askyesno("Confirm Delete", "Are you sure you want to delete this inquiry? This action cannot be undone.")
         if not confirm:
             return
 
@@ -302,18 +231,7 @@ class InquiryTab:
 
         for row in inquiries:
             # Add to treeview
-            self.inquiry_tree.insert(
-                "",
-                "end",
-                values=(
-                    row[0],
-                    row[1],
-                    row[2] or "N/A",
-                    row[3],
-                    row[4] or "New",
-                    row[5] or "Unassigned",
-                ),
-            )
+            self.inquiry_tree.insert("", "end", values=(row[0], row[1], row[2] or "N/A", row[3], row[4] or "New", row[5] or "Unassigned"))
 
     def search_inquiries(self):
         """Search inquiries by client name"""
@@ -331,18 +249,7 @@ class InquiryTab:
 
         for row in inquiries:
             # Add to treeview
-            self.inquiry_tree.insert(
-                "",
-                "end",
-                values=(
-                    row[0],
-                    row[1],
-                    row[2] or "N/A",
-                    row[3],
-                    row[4] or "New",
-                    row[5] or "Unassigned",
-                ),
-            )
+            self.inquiry_tree.insert("", "end", values=(row[0], row[1], row[2] or "N/A", row[3], row[4] or "New", row[5] or "Unassigned"))
 
     def filter_inquiries(self):
         """Filter inquiries by status"""
@@ -360,18 +267,7 @@ class InquiryTab:
 
         for row in inquiries:
             # Add to treeview
-            self.inquiry_tree.insert(
-                "",
-                "end",
-                values=(
-                    row[0],
-                    row[1],
-                    row[2] or "N/A",
-                    row[3],
-                    row[4] or "New",
-                    row[5] or "Unassigned",
-                ),
-            )
+            self.inquiry_tree.insert("", "end", values=(row[0], row[1], row[2] or "N/A", row[3], row[4] or "New", row[5] or "Unassigned"))
 
     def inquiry_selected(self, event):
         """Handle inquiry selection in the treeview"""
