@@ -128,7 +128,7 @@ class MarketingTab:
 
         # Property listing
         ttk.Label(
-            right_frame, text="Property Listings", font=("Arial", 14, "bold")
+            right_frame, text="Marketing Analysis", font=("Arial", 14, "bold")
         ).pack(pady=10)
 
         # Search frame
