@@ -9,7 +9,7 @@ class MarketingTab:
         self.app = app
 
         # Variables for entry fields
-        self.address_var = tk.StringVar()
+        self.registration_fee_var = tk.StringVar()  # Changed from address_var
         self.property_type_var = tk.StringVar()
         self.bedrooms_var = tk.StringVar()
         self.bathrooms_var = tk.StringVar()
@@ -39,10 +39,11 @@ class MarketingTab:
             left_frame, text="Marketing", font=("Arial", 14, "bold")
         ).grid(row=0, column=0, columnspan=2, pady=10)
 
-        ttk.Label(left_frame, text="Address:").grid(
+        # Changed from Address to Registration Fee
+        ttk.Label(left_frame, text="Registration Fee:").grid(
             row=1, column=0, sticky=tk.W, pady=5
         )
-        ttk.Entry(left_frame, textvariable=self.address_var, width=40).grid(
+        ttk.Entry(left_frame, textvariable=self.registration_fee_var, width=15).grid(
             row=1, column=1, pady=5, sticky=tk.W
         )
 
@@ -147,14 +148,14 @@ class MarketingTab:
         )
 
         # Treeview for property listing
-        columns = ("id", "address", "type", "beds", "baths", "price", "status", "agent")
+        columns = ("id", "registration_fee", "type", "beds", "baths", "price", "status", "agent")  # Changed from address to registration_fee
         self.property_tree = ttk.Treeview(
             right_frame, columns=columns, show="headings", height=15
         )
 
         # Define headings
         self.property_tree.heading("id", text="ID")
-        self.property_tree.heading("address", text="Address")
+        self.property_tree.heading("registration_fee", text="Registration Fee")  # Changed from address to registration_fee
         self.property_tree.heading("type", text="Type")
         self.property_tree.heading("beds", text="Beds")
         self.property_tree.heading("baths", text="Baths")
@@ -164,7 +165,7 @@ class MarketingTab:
 
         # Define columns
         self.property_tree.column("id", width=40)
-        self.property_tree.column("address", width=200)
+        self.property_tree.column("registration_fee", width=150)  # Changed from address to registration_fee
         self.property_tree.column("type", width=80)
         self.property_tree.column("beds", width=50)
         self.property_tree.column("baths", width=50)
@@ -207,7 +208,7 @@ class MarketingTab:
 
     def add_property(self):
         """Add a new property to the database"""
-        address = self.address_var.get()
+        registration_fee = self.registration_fee_var.get()  # Changed from address
         property_type = self.property_type_var.get()
         bedrooms = self.bedrooms_var.get()
         bathrooms = self.bathrooms_var.get()
@@ -216,9 +217,9 @@ class MarketingTab:
         agent_id = self.get_id_from_combobox(self.agent_id_var.get())
         description = self.description_text.get("1.0", tk.END).strip()
 
-        if not address or not property_type:
+        if not registration_fee or not property_type:  # Changed from address to registration_fee
             messagebox.showerror(
-                "Error", "Address and Property Type are required fields"
+                "Error", "Registration Fee and Property Type are required fields"  # Changed from Address to Registration Fee
             )
             return
 
@@ -226,9 +227,10 @@ class MarketingTab:
             bedrooms = int(bedrooms) if bedrooms else 0
             bathrooms = float(bathrooms) if bathrooms else 0
             price = float(price) if price else 0
+            registration_fee = float(registration_fee) if registration_fee else 0  # Ensure registration_fee is a float
 
-            self.db.add_property(
-                address,
+            self.db.add_marketing(
+                registration_fee,  # Changed from address to registration_fee
                 property_type,
                 bedrooms,
                 bathrooms,
@@ -253,7 +255,7 @@ class MarketingTab:
             return
 
         property_id = self.property_tree.item(selected_item, "values")[0]
-        address = self.address_var.get()
+        registration_fee = self.registration_fee_var.get()  # Changed from address
         property_type = self.property_type_var.get()
         bedrooms = self.bedrooms_var.get()
         bathrooms = self.bathrooms_var.get()
@@ -262,9 +264,9 @@ class MarketingTab:
         agent_id = self.get_id_from_combobox(self.agent_id_var.get())
         description = self.description_text.get("1.0", tk.END).strip()
 
-        if not address or not property_type:
+        if not registration_fee or not property_type:  # Changed from address to registration_fee
             messagebox.showerror(
-                "Error", "Address and Property Type are required fields"
+                "Error", "Registration Fee and Property Type are required fields"  # Changed from Address to Registration Fee
             )
             return
 
@@ -272,10 +274,11 @@ class MarketingTab:
             bedrooms = int(bedrooms) if bedrooms else 0
             bathrooms = float(bathrooms) if bathrooms else 0
             price = float(price) if price else 0
+            registration_fee = float(registration_fee) if registration_fee else 0  # Ensure registration_fee is a float
 
-            self.db.update_property(
+            self.db.update_marketing(
                 property_id,
-                address,
+                registration_fee,  # Changed from address to registration_fee
                 property_type,
                 bedrooms,
                 bathrooms,
@@ -308,7 +311,7 @@ class MarketingTab:
             return
 
         try:
-            self.db.delete_property(property_id)
+            self.db.delete_marketing(property_id)
             self.clear_fields()
             self.load_properties()
             self.app.inquiry_tab.load_inquiries()
@@ -325,9 +328,18 @@ class MarketingTab:
             self.property_tree.delete(i)
 
         # Load data from database
-        properties = self.db.get_properties()
+        properties = self.db.get_marketing_entries()
 
         for row in properties:
+            try:
+                # Ensure registration_fee is a float
+                registration_fee = float(row[1]) if row[1] else 0.0
+            except (ValueError, TypeError):
+                registration_fee = 0.0  # Default value if conversion fails
+
+            # Format registration_fee as currency
+            formatted_fee = f"₹{registration_fee:.2f}"
+
             # Format price as INR currency
             price_in_lakhs = row[5] / 100000
             if price_in_lakhs >= 100:
@@ -348,19 +360,19 @@ class MarketingTab:
                 "",
                 "end",
                 values=(
-                    row[0],
-                    row[1],
-                    row[2],
-                    beds,
-                    baths_formatted,
-                    price_formatted,
-                    row[6],
-                    row[7] or "None",
+                    row[0],  # ID
+                    formatted_fee,  # Registration Fee
+                    row[2],  # Type
+                    beds,  # Beds
+                    baths_formatted,  # Baths
+                    price_formatted,  # Price
+                    row[6],  # Status
+                    row[7] or "None",  # Agent
                 ),
             )
 
     def search_properties(self):
-        """Search properties by address or property type"""
+        """Search properties by registration fee or property type"""
         search_term = self.property_search_var.get()
         if not search_term:
             self.load_properties()
@@ -371,9 +383,18 @@ class MarketingTab:
             self.property_tree.delete(i)
 
         # Search properties
-        properties = self.db.search_properties(search_term)
+        properties = self.db.search_marketing_entries(search_term)
 
         for row in properties:
+            try:
+                # Ensure registration_fee is a float
+                registration_fee = float(row[1]) if row[1] else 0.0
+            except (ValueError, TypeError):
+                registration_fee = 0.0  # Default value if conversion fails
+
+            # Format registration_fee as currency
+            formatted_fee = f"₹{registration_fee:.2f}"
+
             # Format price as INR currency
             price_in_lakhs = row[5] / 100000
             if price_in_lakhs >= 100:
@@ -394,14 +415,14 @@ class MarketingTab:
                 "",
                 "end",
                 values=(
-                    row[0],
-                    row[1],
-                    row[2],
-                    beds,
-                    baths_formatted,
-                    price_formatted,
-                    row[6],
-                    row[7] or "None",
+                    row[0],  # ID
+                    formatted_fee,  # Registration Fee
+                    row[2],  # Type
+                    beds,  # Beds
+                    baths_formatted,  # Baths
+                    price_formatted,  # Price
+                    row[6],  # Status
+                    row[7] or "None",  # Agent
                 ),
             )
 
@@ -413,13 +434,13 @@ class MarketingTab:
             property_id = self.property_tree.item(selected_item, "values")[0]
 
             # Get property details from database
-            property_data = self.db.get_property(property_id)
+            property_data = self.db.get_marketing(property_id)
             if property_data:
                 # Clear current fields
                 self.clear_fields()
 
                 # Populate fields with selected property data
-                self.address_var.set(property_data[1])
+                self.registration_fee_var.set(property_data[1])  # Changed from address to registration_fee
                 self.property_type_var.set(property_data[2])
                 self.bedrooms_var.set(property_data[3])
                 self.bathrooms_var.set(property_data[4])
@@ -442,7 +463,7 @@ class MarketingTab:
 
     def clear_fields(self):
         """Clear all input fields"""
-        self.address_var.set("")
+        self.registration_fee_var.set("")  # Changed from address to registration_fee
         self.property_type_var.set("")
         self.bedrooms_var.set("")
         self.bathrooms_var.set("")
